@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "M82xHWKpDugUmL9h8Mqg8PIOIu+2MXtJ/169rxpjmM0H8LJ0XebtfwJUKBZkvyd5Bpb5ZPkxGR2lfILpTq7eSQ==",
+  "dgSpecHash": "I8EObmwIZx3NhKNHuHefFwZyUw4htXTcVd5eP3R1YSUxgWuubR/zzyR3hyqwFvVHR8z123K4tkFGeeolRX7eBA==",
   "success": true,
-  "projectFilePath": "/home/fundacion/Desktop/New Folder/ToDoList/code/ToDoList/WebToDoList.csproj",
+  "projectFilePath": "/home/fundacion/Desktop/ToDoList/code/ToDoList/WebToDoList.csproj",
   "expectedPackageFiles": [
     "/home/fundacion/.nuget/packages/awssdk.core/3.7.100.14/awssdk.core.3.7.100.14.nupkg.sha512",
     "/home/fundacion/.nuget/packages/awssdk.securitytoken/3.7.100.14/awssdk.securitytoken.3.7.100.14.nupkg.sha512",

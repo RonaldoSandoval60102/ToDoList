@@ -27,21 +27,21 @@ Env.Load();
 var mongoConnection = new ConnectMongo(Environment.GetEnvironmentVariable("MONGO_CONNECTION_STRING"));
 var collection = mongoConnection.GetCollection("ToDoList", "Tasks");
 
-var collectionSettings = new MongoCollectionSettings
+var collectionSettings = new InsertOneOptions
 {
-    AssignIdOnInsert = false 
+    BypassDocumentValidation = false
 };
 
 app.MapPost("/api/tasks", async ([FromBody] TaskToDoList task) =>
 {
     try
     {
-        await collection.InsertOneAsync(task);
-        return Results.Ok();
+        await collection.InsertOneAsync(task, collectionSettings);
+        return Results.Ok(task);
     }
-    catch (ToDoListException)
+    catch (ToDoListException ex)
     {
-        return Results.BadRequest(new ToDoListException(ExceptionToDoList.BadRequest).GetBaseException().Message);
+        return Results.BadRequest(new { message = ex.GetBaseException().Message });
     }
 });
 
@@ -55,12 +55,7 @@ app.MapGet("/api/tasks/{id}", async ([FromRoute] string id) =>
 {
     try
     {
-        if (!ObjectId.TryParse(id, out ObjectId objectId))
-        {
-            throw new ToDoListException(ExceptionToDoList.TaskNotFound);
-        }
-
-        var filter = Builders<TaskToDoList>.Filter.Eq("_id", objectId);
+        var filter = Builders<TaskToDoList>.Filter.Eq("Id", id);
         var task = await collection.Find(filter).FirstOrDefaultAsync();
 
         if (task == null)
@@ -78,24 +73,72 @@ app.MapGet("/api/tasks/{id}", async ([FromRoute] string id) =>
 
 
 
+
 app.MapDelete("/api/tasks/{id}", async ([FromRoute] string id) =>
 {
     try
     {
-        if (!ObjectId.TryParse(id, out ObjectId objectId))
+
+        var filter = Builders<TaskToDoList>.Filter.Eq("Id", id);
+        var task = await collection.Find(filter).FirstOrDefaultAsync();
+
+        if (task == null)
         {
             throw new ToDoListException(ExceptionToDoList.TaskNotFound);
         }
 
-        var filter = Builders<TaskToDoList>.Filter.Eq("_id", objectId);
-        var result = await collection.DeleteOneAsync(filter);
+        await collection.DeleteOneAsync(filter);
 
-        if (result.DeletedCount == 0)
+        return Results.Ok(task);
+    }
+    catch (ToDoListException ex)
+    {
+        return Results.BadRequest(ex.GetBaseException().Message);
+    }
+});
+
+app.MapPut("/api/tasks/{id}", async ([FromRoute] string id, [FromBody] TaskToDoList task) =>
+{
+    try
+    {
+        var filter = Builders<TaskToDoList>.Filter.Eq("Id", id);
+        var taskToUpdate = await collection.Find(filter).FirstOrDefaultAsync();
+
+        if (taskToUpdate == null)
         {
-            throw new ToDoListException(ExceptionToDoList.NotDeleted);
+            throw new ToDoListException(ExceptionToDoList.TaskNotFound);
         }
 
-        return Results.Ok();
+        taskToUpdate.Title = task.Title;
+        taskToUpdate.IsDone = task.IsDone;
+
+        await collection.ReplaceOneAsync(filter, taskToUpdate);
+
+        return Results.Ok(taskToUpdate);
+    }
+    catch (ToDoListException ex)
+    {
+        return Results.BadRequest(ex.GetBaseException().Message);
+    }
+});
+
+app.MapPatch("/api/tasks/{id}", async ([FromRoute] string id, [FromBody] TaskToDoList task) =>
+{
+    try
+    {
+        var filter = Builders<TaskToDoList>.Filter.Eq("Id", id);
+        var taskToUpdate = await collection.Find(filter).FirstOrDefaultAsync();
+
+        if (taskToUpdate == null)
+        {
+            throw new ToDoListException(ExceptionToDoList.TaskNotFound);
+        }
+
+        taskToUpdate.IsDone = task.IsDone;
+
+        await collection.ReplaceOneAsync(filter, taskToUpdate);
+
+        return Results.Ok(taskToUpdate);
     }
     catch (ToDoListException ex)
     {

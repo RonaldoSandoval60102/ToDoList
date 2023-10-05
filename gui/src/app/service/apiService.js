@@ -25,6 +25,24 @@ const apiService = (url, endpoint) => {
             });
             return response.json();
         },
+
+        put: async (id, body) => {
+            const response = await fetch(`${baseUrl}/${id}`, {
+                method: "PUT",
+                headers: jsonContentHeader,
+                body: JSON.stringify(body),
+            });
+            return response.json();
+        },
+
+        patch: async (id, body) => {
+            const response = await fetch(`${baseUrl}/${id}`, {
+                method: "PATCH",
+                headers: jsonContentHeader,
+                body: JSON.stringify(body),
+            });
+            return response.json();
+        },
     };
 };
 

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/fundacion/Desktop/New Folder/ToDoList/code/ToDoList/WebToDoList.csproj": {}
+    "/home/fundacion/Desktop/ToDoList/code/ToDoList/WebToDoList.csproj": {}
   },
   "projects": {
-    "/home/fundacion/Desktop/New Folder/ToDoList/code/ToDoList/WebToDoList.csproj": {
+    "/home/fundacion/Desktop/ToDoList/code/ToDoList/WebToDoList.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/fundacion/Desktop/New Folder/ToDoList/code/ToDoList/WebToDoList.csproj",
+        "projectUniqueName": "/home/fundacion/Desktop/ToDoList/code/ToDoList/WebToDoList.csproj",
         "projectName": "WebToDoList",
-        "projectPath": "/home/fundacion/Desktop/New Folder/ToDoList/code/ToDoList/WebToDoList.csproj",
+        "projectPath": "/home/fundacion/Desktop/ToDoList/code/ToDoList/WebToDoList.csproj",
         "packagesPath": "/home/fundacion/.nuget/packages/",
-        "outputPath": "/home/fundacion/Desktop/New Folder/ToDoList/code/ToDoList/obj/",
+        "outputPath": "/home/fundacion/Desktop/ToDoList/code/ToDoList/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/fundacion/.nuget/NuGet/NuGet.Config"

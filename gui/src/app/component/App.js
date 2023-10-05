@@ -21,19 +21,32 @@ function App() {
     fetchTasks();
   }, []);
 
-  const handleAddTask = () => {
+  const handleAddTask = async () => {
     const updatedTasks = [...tasks];
     updatedTasks.push({ title: newTask });
     setTasks(updatedTasks);
     setNewTask("");
-    service.post({ title: newTask });
+    await service.post({ title: newTask });
   };
 
-  const handleDeleteTask = (index) => {
+  const handleDeleteTask = async (index) => {
     const updatedTasks = [...tasks];
+    const taskId = tasks[index].id;
+    await service.delete(taskId);
     updatedTasks.splice(index, 1);
     setTasks(updatedTasks);
-    service.delete(tasks[index].id);
+  };
+
+  const handleComplete = async (taskId) => {
+    try {
+      const updatedTasks = tasks.map((task) =>
+        task.id === taskId ? { ...task, isDone: !task.isDone } : task
+      );
+      setTasks(updatedTasks);
+  
+      await service.patch(taskId, { isDone: updatedTasks.isDone });
+    } catch (error) {
+    }
   };
 
   return (
@@ -62,7 +75,11 @@ function App() {
           </div>
           <ul className="tasklist">
             {tasks.map((task, index) => (
-              <li key={task.id}>
+              <li
+                key={task.id}
+                style={{ backgroundColor: task.isDone ? "green" : "white" }}
+                onClick={() => handleComplete(task.id)}
+              >
                 {task.title}
                 <button
                   className="deleteButton"
