@@ -5,8 +5,8 @@ import apiService from "../service/apiService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDeleteLeft, faPlus } from "@fortawesome/free-solid-svg-icons";
 
-const URL = "http://localhost:5015";
-const ENDPOINT = "api/tasks";
+const URL = "http://localhost:5016";
+const ENDPOINT = "api/task";
 const service = apiService(URL, ENDPOINT);
 
 function App() {
@@ -22,6 +22,9 @@ function App() {
   }, []);
 
   const handleAddTask = async () => {
+    if (newTask === "") {
+      return;
+    }
     const updatedTasks = [...tasks];
     updatedTasks.push({ title: newTask });
     setTasks(updatedTasks);
@@ -32,21 +35,17 @@ function App() {
   const handleDeleteTask = async (index) => {
     const updatedTasks = [...tasks];
     const taskId = tasks[index].id;
-    await service.delete(taskId);
     updatedTasks.splice(index, 1);
     setTasks(updatedTasks);
+    await service.delete(taskId);
   };
-
-  const handleComplete = async (taskId) => {
-    try {
-      const updatedTasks = tasks.map((task) =>
-        task.id === taskId ? { ...task, isDone: !task.isDone } : task
-      );
-      setTasks(updatedTasks);
   
-      await service.patch(taskId, { isDone: updatedTasks.isDone });
-    } catch (error) {
-    }
+  const handleIsDone = async (taskId) => {
+    const updatedTasks = [...tasks];
+    const task = updatedTasks.find((task) => task.id === taskId);
+    task.isDone = !task.isDone;
+    setTasks(updatedTasks);
+    await service.patch(taskId, { isDone: task.isDone });
   };
 
   return (
@@ -78,12 +77,15 @@ function App() {
               <li
                 key={task.id}
                 style={{ backgroundColor: task.isDone ? "green" : "white" }}
-                onClick={() => handleComplete(task.id)}
+                onClick={() => handleIsDone(task.id)}
               >
                 {task.title}
                 <button
                   className="deleteButton"
-                  onClick={() => handleDeleteTask(index)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteTask(index);
+                  }}
                 >
                   <FontAwesomeIcon icon={faDeleteLeft} />
                 </button>

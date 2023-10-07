@@ -23,7 +23,7 @@ const apiService = (url, endpoint) => {
             const response = await fetch(`${baseUrl}/${id}`, {
                 method: "DELETE",
             });
-            return response.json();
+            return response;
         },
 
         put: async (id, body) => {
@@ -41,7 +41,7 @@ const apiService = (url, endpoint) => {
                 headers: jsonContentHeader,
                 body: JSON.stringify(body),
             });
-            return response.json();
+            return response;
         },
     };
 };
