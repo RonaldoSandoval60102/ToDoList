@@ -13,7 +13,6 @@ namespace code.logic.mongo.service
         {
             var client = new MongoClient(settings.Value.ConnectionString);
             var database = client.GetDatabase(settings.Value.DatabaseName);
-
             _tasks = database.GetCollection<ToDoListTask>(settings.Value.TaskCollectionName);
         }
 

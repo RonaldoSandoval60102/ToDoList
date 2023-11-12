@@ -8,7 +8,7 @@ builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("T
 
 builder.Services.AddControllers();
 
-builder.Services.AddSingleton<ITaskService>();
+builder.Services.AddScoped<ITaskService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
