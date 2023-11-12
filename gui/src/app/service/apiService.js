@@ -15,9 +15,18 @@ const apiService = (url, endpoint) => {
         },
 
         getAll: async () => {
-            const response = await fetch(baseUrl);
-            return response.json();
+            try {
+                const response = await fetch(baseUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                throw error;
+            }
         },
+        
 
         delete: async (id) => {
             const response = await fetch(`${baseUrl}/${id}`, {
