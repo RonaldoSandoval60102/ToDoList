@@ -16,8 +16,9 @@ namespace code.logic.controller
         }
 
         [HttpGet]
-        public ActionResult<List<ToDoListTask>> Get() =>
-            _taskService.Get();
+        public ActionResult<List<ToDoListTask>> Get(){
+            return _taskService.Get();
+        }
 
         [HttpGet("{id:length(24)}", Name = "GetTask")]
         public ActionResult<ToDoListTask> Get(string id)

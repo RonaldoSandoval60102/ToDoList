@@ -18,7 +18,6 @@ namespace code.logic.mongo.service
 
         public List<ToDoListTask> Get() =>
             _tasks.Find(task => true).ToList();
-
         public ToDoListTask Get(string id) =>
             _tasks.Find<ToDoListTask>(task => task.Id == id).FirstOrDefault();
 
