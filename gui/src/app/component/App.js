@@ -5,7 +5,7 @@ import apiService from "../service/apiService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDeleteLeft, faPlus } from "@fortawesome/free-solid-svg-icons";
 
-const URL = "https://todolistfirstpractice.azurewebsites.net/";
+const URL = "https://todolistv2practice.azurewebsites.net";
 const ENDPOINT = "api/task";
 const service = apiService(URL, ENDPOINT);
 
